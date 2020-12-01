@@ -1,7 +1,7 @@
 #[aoc_generator(day1)]
 pub fn generator_part1(input: &str) -> Vec<usize> {
   let mut parsed: Vec<usize> = input.lines().map(|l| l.parse::<usize>().unwrap()).collect();
-  parsed.sort();
+  parsed.sort_unstable();
   parsed
 }
 
