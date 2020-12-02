@@ -15,15 +15,11 @@ impl FromStr for PasswordPolicy {
     let min: u8 = iterator
       .by_ref()
       .take_while(|c| *c != '-')
-      .collect::<String>()
-      .parse::<u8>()
-      .unwrap();
+      .fold(0, |tot, c| tot * 10 + (c as u8 - '0' as u8));
     let max: u8 = iterator
       .by_ref()
       .take_while(|c| *c != ' ')
-      .collect::<String>()
-      .parse::<u8>()
-      .unwrap();
+      .fold(0, |tot, c| tot * 10 + (c as u8 - '0' as u8));
     let character: char = iterator.by_ref().next().unwrap();
     let password: String = iterator.skip(2).collect::<String>();
     Ok(PasswordPolicy {
