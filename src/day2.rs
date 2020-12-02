@@ -1,3 +1,4 @@
+use rayon::prelude::*;
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq)]
@@ -42,9 +43,13 @@ pub fn generator(input: &str) -> Vec<PasswordPolicy> {
 #[aoc(day2, part1)]
 pub fn part1(input: &Vec<PasswordPolicy>) -> usize {
   input
-    .iter()
+    .par_iter()
     .filter(|pp| {
-      let matches: u8 = pp.password.matches(pp.character).count() as u8;
+      let matches: u8 = pp
+        .password
+        .bytes()
+        .filter(|c| *c as char == pp.character)
+        .count() as u8;
       matches >= pp.min && matches <= pp.max
     })
     .count()
