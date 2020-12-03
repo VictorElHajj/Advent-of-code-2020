@@ -3,8 +3,8 @@ use std::str::FromStr;
 
 #[derive(Debug, PartialEq)]
 pub struct PasswordPolicy {
-  min: u8,
-  max: u8,
+  min: usize,
+  max: usize,
   character: char,
   password: String,
 }
@@ -13,14 +13,14 @@ impl FromStr for PasswordPolicy {
   type Err = std::num::ParseIntError;
   fn from_str(input: &str) -> Result<Self, Self::Err> {
     let mut iterator = input.chars();
-    let min: u8 = iterator
+    let min: usize = iterator
       .by_ref()
       .take_while(|c| *c != '-')
-      .fold(0, |tot, c| tot * 10 + (c as u8 - '0' as u8));
-    let max: u8 = iterator
+      .fold(0, |tot, c| tot * 10 + (c as usize - '0' as usize));
+    let max: usize = iterator
       .by_ref()
       .take_while(|c| *c != ' ')
-      .fold(0, |tot, c| tot * 10 + (c as u8 - '0' as u8));
+      .fold(0, |tot, c| tot * 10 + (c as usize - '0' as usize));
     let character: char = iterator.by_ref().next().unwrap();
     let password: String = iterator.skip(2).collect::<String>();
     Ok(PasswordPolicy {
@@ -45,11 +45,11 @@ pub fn part1(input: &Vec<PasswordPolicy>) -> usize {
   input
     .par_iter()
     .filter(|pp| {
-      let matches: u8 = pp
+      let matches: usize = pp
         .password
         .bytes()
         .filter(|c| *c as char == pp.character)
-        .count() as u8;
+        .count();
       matches >= pp.min && matches <= pp.max
     })
     .count()
@@ -60,8 +60,8 @@ pub fn part2(input: &Vec<PasswordPolicy>) -> usize {
   input
     .iter()
     .filter(|pp| {
-      let first = pp.password.as_bytes()[(pp.min - 1) as usize] as char == pp.character;
-      let second = pp.password.as_bytes()[(pp.max - 1) as usize] as char == pp.character;
+      let first = pp.password.as_bytes()[pp.min - 1] as char == pp.character;
+      let second = pp.password.as_bytes()[pp.max - 1] as char == pp.character;
       first ^ second
     })
     .count()
