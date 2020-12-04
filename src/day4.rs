@@ -23,16 +23,7 @@ pub fn generator(input: &str) -> Vec<HashMap<String, String>> {
 pub fn part1(input: &Vec<HashMap<String, String>>) -> usize {
   input
     .par_iter()
-    .filter(|hm| {
-      hm.contains_key("byr")
-        && hm.contains_key("iyr")
-        && hm.contains_key("eyr")
-        && hm.contains_key("hgt")
-        && hm.contains_key("hcl")
-        && hm.contains_key("ecl")
-        && hm.contains_key("ecl")
-        && hm.contains_key("pid")
-    })
+    .filter(|hm| hm.len() - (hm.contains_key("cid") as usize) == 7)
     .count()
 }
 
@@ -41,14 +32,7 @@ pub fn part2(input: &Vec<HashMap<String, String>>) -> usize {
   input
     .par_iter()
     .filter(|hm| {
-      let has_all_fields = hm.contains_key("byr")
-        && hm.contains_key("iyr")
-        && hm.contains_key("eyr")
-        && hm.contains_key("hgt")
-        && hm.contains_key("hcl")
-        && hm.contains_key("ecl")
-        && hm.contains_key("ecl")
-        && hm.contains_key("pid");
+      let has_all_fields = hm.len() - (hm.contains_key("cid") as usize) == 7;
       if !has_all_fields {
         return false;
       }
