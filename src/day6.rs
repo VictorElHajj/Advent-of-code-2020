@@ -36,7 +36,7 @@ pub fn part1(input: &Vec<FormGroup>) -> usize {
     .map(|hm| {
       hm.char_map
         .iter()
-        .fold(0, |acc, x| if *x > 0 { acc + 1 } else { acc })
+        .fold(0, |acc, x| acc + (*x > 0 as u8) as usize)
     })
     .sum()
 }
@@ -46,13 +46,11 @@ pub fn part2(input: &Vec<FormGroup>) -> usize {
   input
     .iter()
     .map(|hm| {
-      let temp = hm
-        .char_map
+      hm.char_map
         .iter()
-        .fold(0usize, |acc, x| if *x == hm.len { acc + 1 } else { acc });
-      temp
+        .fold(0, |acc, x| acc + (*x == hm.len as u8) as usize)
     })
-    .sum::<usize>()
+    .sum()
 }
 
 #[cfg(test)]
@@ -77,9 +75,9 @@ a
 
 b";
     let parsed = generator(&test_input);
-    //let result1 = part1(&parsed);
+    let result1 = part1(&parsed);
     let result2 = part2(&parsed);
-    //assert_eq!(result1, 11);
+    assert_eq!(result1, 11);
     assert_eq!(result2, 6)
   }
 }
