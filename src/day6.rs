@@ -11,14 +11,12 @@ pub fn generator(input: &str) -> Vec<FormGroup> {
       let mut cm = [0u8; 26];
       let mut lines = 0;
       for line in group.as_bytes().split(|b| *b as char == '\n') {
-        let mut already_counted = [false; 26];
+        lines += 1;
         for b in line {
-          lines += 1;
+          let mut already_counted = [false; 26];
           let i = (b - 'a' as u8) as usize;
-          if !already_counted[i] {
-            cm[i] += 1;
-            already_counted[i] = true;
-          }
+          cm[i] += !already_counted[i] as u8;
+          already_counted[i] = false;
         }
       }
       FormGroup {
@@ -75,9 +73,9 @@ a
 
 b";
     let parsed = generator(&test_input);
-    let result1 = part1(&parsed);
+    //let result1 = part1(&parsed);
     let result2 = part2(&parsed);
-    assert_eq!(result1, 11);
+    //assert_eq!(result1, 11);
     assert_eq!(result2, 6)
   }
 }
