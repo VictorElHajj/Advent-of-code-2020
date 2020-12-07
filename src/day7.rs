@@ -51,6 +51,16 @@ fn dig(
     }
 }
 
+fn bag_sum(key: &String, hm: &HashMap<String, Vec<(String, u8)>>) -> u32 {
+    let mut sum = 1;
+    for (to, weight) in hm.get(key).unwrap() {
+        if to == "none" {
+            return 1;
+        }
+        sum += *weight as u32 * bag_sum(to, hm);
+    }
+    sum
+}
 // Optimization notes, create the hashmap with_capacity, use cache
 
 #[aoc_generator(day7)]
@@ -70,4 +80,9 @@ pub fn part1(hm: &HashMap<String, Vec<(String, u8)>>) -> u8 {
         total += dig(k, &mut cache, hm) as u8;
     }
     total
+}
+
+#[aoc(day7, part2)]
+pub fn part2(hm: &HashMap<String, Vec<(String, u8)>>) -> u32 {
+    bag_sum(&String::from("shiny gold"), hm) - 1
 }
