@@ -127,11 +127,6 @@ fn run2(seats: &Seats) -> Seats {
                     *col = Empty;
                 }
             }
-            let test = match col {
-                Empty => "L",
-                Occupied => "#",
-                Floor => ".",
-            };
         }
     }
     new_seats
