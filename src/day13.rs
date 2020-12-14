@@ -56,15 +56,15 @@ pub fn part2(input: &(Vec<(i64, i64)>, i64)) -> i64 {
 // Adapted from Rosetta code for crt
 fn chinese_remainder_theorem(pairs: &[(i64, i64)]) -> i64 {
     let (_, n): (Vec<i64>, Vec<i64>) = pairs.iter().cloned().unzip();
-    let N: i64 = n.iter().product();
+    let n_sum: i64 = n.iter().product();
 
     let mut sum = 0;
 
     for (a, n) in pairs {
-        let p = N / n;
+        let p = n_sum / n;
         sum += a * mod_inv(p, *n).unwrap() * p;
     }
-    sum % N
+    sum % n_sum
 }
 
 fn egcd(a: i64, b: i64) -> (i64, i64, i64) {
